@@ -7,6 +7,8 @@ FORMAT_OPTIONS=${4}
 MOUNT_OPTIONS=${5}
 UNMOUNT_OPTIONS=${6}
 
+TRUNCATE_RESULT_LINES="365"
+
 ./dev_add.sh "${BLOCK_DEVICE}" "${BLOCK_DEVICE_SIZE}"
 ./format.sh "${BLOCK_DEVICE}" "${FORMAT_OPTIONS}"
 ./mount.sh "${BLOCK_DEVICE}" "${MOUNT_POINT}" "${MOUNT_OPTIONS}"
@@ -16,10 +18,10 @@ cp -r /root/Sources/pjdfstest ${MOUNT_POINT}
 
 echo "Start test..."
 /bin/sh -c "cd ${MOUNT_POINT} && prove -r ./pjdfstest/tests | tee ./test.data"
-/bin/sh -c "cd ${MOUNT_POINT} && head -319 ./test.data > actual.data"
+/bin/sh -c "cd ${MOUNT_POINT} && head -${TRUNCATE_RESULT_LINES} ./test.data > actual.data"
 
 echo "Compare results..."
-/bin/sh -c "cd ${MOUNT_POINT} && head -319 /root/Sources/pjdfstest/expected.data > ./expected.data"
+/bin/sh -c "cd ${MOUNT_POINT} && head -${TRUNCATE_RESULT_LINES} /root/Sources/pjdfstest/expected.data > ./expected.data"
 EXPECTED_MD5=$(md5 /root/Sources/pjdfstest/expected.data | awk '{print $4}')
 ACTUAL_MD5=$(md5 ${MOUNT_POINT}/actual.data | awk '{print $4}')
 

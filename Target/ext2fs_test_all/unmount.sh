@@ -9,5 +9,8 @@ then
 	exit 1
 fi
 
+# Wait some time to prevent "device busy" error
+sleep 30
+
 echo "=== UNMOUNT: unmount ${UNMOUNT_OPTIONS} ${BLOCK_DEVICE}"
 umount ${UNMOUNT_OPTIONS} ${BLOCK_DEVICE} || exit 1

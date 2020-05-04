@@ -12,10 +12,10 @@ UNMOUNT_OPTIONS=${6}
 ./mount.sh "${BLOCK_DEVICE}" "${MOUNT_POINT}" "${MOUNT_OPTIONS}"
 
 
-dd if=/dev/urandom of="${MOUNT_POINT}"/FILE0 &
-dd if=/dev/urandom of="${MOUNT_POINT}"/FILE1 &
-dd if=/dev/urandom of="${MOUNT_POINT}"/FILE2 &
-dd if=/dev/urandom of="${MOUNT_POINT}"/FILE3 &
+dd if=/dev/urandom of="${MOUNT_POINT}"/FILE0 bs=1m &
+dd if=/dev/urandom of="${MOUNT_POINT}"/FILE1 bs=1m &
+dd if=/dev/urandom of="${MOUNT_POINT}"/FILE2 bs=1m &
+dd if=/dev/urandom of="${MOUNT_POINT}"/FILE3 bs=1m &
 
 wait
 

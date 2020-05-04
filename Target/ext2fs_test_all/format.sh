@@ -11,3 +11,6 @@ fi
 
 echo "=== FORMAT: mke2fs -F ${FORMAT_OPTIONS} ${BLOCK_DEVICE}"
 mke2fs -F ${FORMAT_OPTIONS} ${BLOCK_DEVICE} || exit 1
+
+# echo "=== SET SPECIAL GUID:"
+# yes | tune2fs -U f0acce91-a416-474c-8a8c-43f3ed376867 /dev/md0 || exit 1

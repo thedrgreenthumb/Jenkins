@@ -87,12 +87,6 @@ run_testcases_all_versions_4k() # ${1} - test case name
 	done
 }
 
-run_testcases_version_ext2_4k() # ${1} - test case name
-{
-	FORMAT_OPTIONS="-b 4096 ${FEATURES_EXT2}"
-	ssh ${TARGET} "cd ${TEST_CASES_PATH}; /bin/sh -e ${case} \"${BLOCK_DEVICE}\" \"${BLOCK_DEVICE_SIZE}\" \"${MOUNT_POINT}\" \"${FORMAT_OPTIONS}\"" || exit 1
-}
-
 run_testcases_version_ext4_4k() # ${1} - test case name
 {
 	FORMAT_OPTIONS="-b 4096 ${FEATURES_EXT4}"
@@ -109,7 +103,7 @@ setup()
 {
 	echo "=== CLEANUP AND SETUP"
 	ssh ${TARGET} "rm -r -f ${TEST_CASES_PATH}"
-	scp -r /home/drgreenthumb/Jenkins/Target/ext2fs_test_all root@192.168.122.98:/root/ext2fs_test_all_amd64 || exit 1
+	scp -r /home/drgreenthumb/Jenkins/Target/ext2fs_test_all ${TARGET}:/root/${JOB_NAME} || exit 1
 	ssh ${TARGET} "umount -f ${BLOCK_DEVICE}"
 	ssh ${TARGET} "mdconfig -d -u 0"
 }
@@ -139,13 +133,6 @@ for case in ${TESTCASES_ALL_VERSIONS_4K}
 do
 	echo "======================== CASE = $case"
 	run_testcases_all_versions_4k "${case}"
-done
-
-echo "================================================ run_testcases_version_ext2_4k:"
-for case in ${TESTCASES_VERSION_EXT2_4K}
-do
-	echo "======================== CASE = $case"
-	run_testcases_version_ext2_4k "${case}"
 done
 
 echo "================================================ run_testcases_version_ext4_4k:"
