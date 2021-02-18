@@ -57,7 +57,7 @@ rmdir_overfilled_partially() # ${1} DIR_PATH
 ./mount.sh "${BLOCK_DEVICE}" "${MOUNT_POINT}" "${MOUNT_OPTIONS}"
 
 mkdir_with_subdirs "${MOUNT_POINT}/TEST_DIR" 100000
-# rmdir_overfilled_partially "${MOUNT_POINT}/TEST_DIR"
+rmdir_overfilled_partially "${MOUNT_POINT}/TEST_DIR"
 
 ./unmount.sh "${BLOCK_DEVICE}" "${UNMOUNT_OPTIONS}"
 ./check.sh "${BLOCK_DEVICE}"

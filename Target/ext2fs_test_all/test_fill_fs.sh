@@ -11,11 +11,10 @@ UNMOUNT_OPTIONS=${6}
 ./format.sh "${BLOCK_DEVICE}" "${FORMAT_OPTIONS}"
 ./mount.sh "${BLOCK_DEVICE}" "${MOUNT_POINT}" "${MOUNT_OPTIONS}"
 
-
-dd if=/dev/urandom of="${MOUNT_POINT}"/FILE0 bs=1m &
-dd if=/dev/urandom of="${MOUNT_POINT}"/FILE1 bs=1m &
-dd if=/dev/urandom of="${MOUNT_POINT}"/FILE2 bs=1m &
-dd if=/dev/urandom of="${MOUNT_POINT}"/FILE3 bs=1m &
+for i in `seq $NUM_CORES`
+do
+	dd if=/dev/urandom of="${MOUNT_POINT}"/FILE${i} bs=1m &
+done
 
 wait
 

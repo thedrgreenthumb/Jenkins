@@ -20,29 +20,32 @@ run_fsx()
 		exit 1
 	fi
 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -N ${NUM_OPS} ./TEST_FILE0" &
-	pid_list=$pid_list" "$!
+	for i in `seq $((NUM_CORES/8))`
+	do
+		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -N ${NUM_OPS} ./TEST_FILE0_${i}" &
+		pid_list=$pid_list" "$!
 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 12341234 -o 1563463 -N ${NUM_OPS} ./TEST_FILE1" &
-	pid_list=$pid_list" "$!
+		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 12341234 -o 1563463 -N ${NUM_OPS} ./TEST_FILE1_${i}" &
+		pid_list=$pid_list" "$!
 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 13112344 -o 3123112 -N ${NUM_OPS} ./TEST_FILE2" &
-	pid_list=$pid_list" "$!
+		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 13112344 -o 3123112 -N ${NUM_OPS} ./TEST_FILE2_${i}" &
+		pid_list=$pid_list" "$!
 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 10731231 -o 9636784 -N ${NUM_OPS} ./TEST_FILE3" &
-	pid_list=$pid_list" "$!
+		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 10731231 -o 9636784 -N ${NUM_OPS} ./TEST_FILE3_${i}" &
+		pid_list=$pid_list" "$!
 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 2345233 -o 1545 -N ${NUM_OPS} ./TEST_FILE4" &
-	pid_list=$pid_list" "$!
+		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 2345233 -o 1545 -N ${NUM_OPS} ./TEST_FILE4_${i}" &
+		pid_list=$pid_list" "$!
 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 4321 -o 33 -N ${NUM_OPS}  ./TEST_FILE5" &
-	pid_list=$pid_list" "$!
+		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 4321 -o 33 -N ${NUM_OPS}  ./TEST_FILE5_${i}" &
+		pid_list=$pid_list" "$!
 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 1341234 -o 767843 -N ${NUM_OPS} ./TEST_FILE6" &
-	pid_list=$pid_list" "$!
+		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 1341234 -o 767843 -N ${NUM_OPS} ./TEST_FILE6_${i}" &
+		pid_list=$pid_list" "$!
 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 6464637 -o 6267342 -N ${NUM_OPS} ./TEST_FILE7" &
-	pid_list=$pid_list" "$!
+		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -l 6464637 -o 6267342 -N ${NUM_OPS} ./TEST_FILE7_${i}" &
+		pid_list=$pid_list" "$!
+	done
 
 	for a in ${pid_list}
 	do
@@ -70,7 +73,7 @@ run_fstorture()
 	fi
 
 	mkdir ${MOUNT_POINT}/root0 ${MOUNT_POINT}/root1 
-	/bin/sh -ce "cd ${MOUNT_POINT} && ./fstorture root0 root1 4 -c ${NUM_OPS}"
+	/bin/sh -ce "cd ${MOUNT_POINT} && ./fstorture root0 root1 $NUM_CORES -c ${NUM_OPS}"
 
 	sleep 3
 }
