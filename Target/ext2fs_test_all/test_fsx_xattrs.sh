@@ -20,7 +20,12 @@ run_fsx()
 		exit 1
 	fi
 
-	for i in `seq $((NUM_CORES/8))`
+	local loops=$((NUM_CORES/8))
+	if [ "$loops" -eq "0" ]; then
+		loops=1
+	fi
+
+	for i in `seq $loops`
 	do
 		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -e 512 -N ${NUM_OPS} ./TEST_FILE0_${i}" &
 		pid_list=$pid_list" "$!

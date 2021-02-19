@@ -20,13 +20,17 @@ run_fsx()
 	local NUM_OPS=1000
 	local SEED=0
 
-
 	if [ ! -f ${MOUNT_POINT}/fsx ]; then
 		echo "Cannot find binary test FAIL"
 		exit 1
 	fi
 
-	for i in `seq $((NUM_CORES/8))`
+	local loops=$((NUM_CORES/8))
+	if [ "$loops" -eq "0" ]; then
+		loops=1
+	fi
+
+	for i in `seq $loops`
 	do
 		/bin/sh -ce "cd ${MOUNT_POINT} && ./fsx -S ${SEED} -N ${NUM_OPS} ./TEST_FILE0_${i}" &
 		pid_list=$pid_list" "$!
