@@ -30,7 +30,7 @@ target_git_clone()
 	echo "Remove $path directory"
 	target_execute "rm -r -f $path" $((30*60))
 
-	target_execute "git clone --branch $branch $url $path" $((60*60))
+	target_execute "git clone --progress --branch $branch $url $path" $((60*60))
 	if [ "$?" != "0" ]; then
 		fatal "Cannot checkout sources"
 	fi
@@ -56,7 +56,7 @@ tagret_git_clone_send()
 	rm -r -f "${runner_path}/${repo}"
 	rm -r -f "${runner_path}/${repo}.zip"
 
-	git clone --branch "$branch" "$url" "$runner_path/$repo"
+	git clone --progress --branch "$branch" "$url" "$runner_path/$repo"
 	if [ "$?" != "0" ]; then
 		fatal "Cannot clone sources"
 	fi

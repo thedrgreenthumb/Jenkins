@@ -78,7 +78,7 @@ fi
 target_reboot
 
 echo "Validate running kernel..."
-target_execute "uname -a | awk -F ' ' '{print $7}' | awk -F '-' '{print $3}'" \
+target_execute "uname -a | awk -F ' ' '{print $6}' | awk -F '-' '{print $3}'" \
     60 "$retfile"
 if echo "$LOCAL_COMMIT_ID" | grep -q "$(cat $retfile)"; then
 	echo "Kernel is valid: branch=$LOCAL_BRANCH, commitID=$LOCAL_COMMIT_ID"

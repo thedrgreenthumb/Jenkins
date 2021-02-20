@@ -55,7 +55,7 @@ target_kernel_is_modified()
 #
 target_check()
 {
-	tmpfile=$(mktemp /tmp/TMP_PREFIX.XXXXXX)
+	tmpfile=$(mktemp /tmp/$TMP_PREFIX.XXXXXX)
 
 	log "check target..."
 
