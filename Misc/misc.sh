@@ -105,7 +105,11 @@ target_execute()
 #
 target_reboot()
 {
-	target_execute "reboot"
+	if [ "$SSH_USER" == "root" ]; then
+		target_execute "reboot"
+	else
+		target_execute "echo $SSH_USER_PASS | sudo -S reboot"
+	fi
 
 	log "reboot target: ${SSH_USER}@${SSH_IP}, waiting..."
 
@@ -147,7 +151,7 @@ target_scp_to()
 {
 	log "scp ${SSH_OPTS} $1 ${SSH_USER}@${SSH_IP}:$2"
 
-	scp ${SSH_OPTS} $1 ${SSH_USER}@${SSH_IP}:$2
+	scp -r ${SSH_OPTS} $1 ${SSH_USER}@${SSH_IP}:$2
 	ret=$?
 	if [ "$ret" -ne "0" ]; then
 		fatal "Cannot scp to ${SSH_USER}@${SSH_IP}:$2 from $1"

@@ -50,13 +50,13 @@ if [ "$?" != "0" ]; then
 	fatal "Cannot build"
 fi
 
-echo "Install..."
-target_execute "cd $OPENZFS_TARGET_PATH && sudo make install" $((10*60))
-if [ "$?" != "0" ]; then
-	fatal "Cannot install"
-fi
+#echo "Install..."
+#target_execute "cd $OPENZFS_TARGET_PATH && echo $SSH_USER_PASS | sudo -S make install" $((10*60))
+#if [ "$?" != "0" ]; then
+#	fatal "Cannot install"
+#fi
 
-target_reboot
+#target_reboot
 
 echo "Build done."
 target_info

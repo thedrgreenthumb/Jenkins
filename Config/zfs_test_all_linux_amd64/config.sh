@@ -1,3 +1,8 @@
-TARGET="root@repos.z.vstack.com"
+SSH_USER="user"
+SSH_USER_PASS="pass"
+SSH_OPTS=""
+SSH_IP="192.168.116.151"
+
+TARGET_HOSTNAME="ub"
 
 OPENZFS_TARGET_PATH="/home/user/Sources/zfs"

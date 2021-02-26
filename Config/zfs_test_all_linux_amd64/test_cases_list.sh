@@ -1,1 +1,1 @@
-TESTCASES_ALL="test_zfs.sh"
+TESTCASES_ALL="test_all.sh"

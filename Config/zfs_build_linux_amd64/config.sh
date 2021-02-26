@@ -1,4 +1,5 @@
 SSH_USER="user"
+SSH_USER_PASS="pass"
 SSH_OPTS=""
 SSH_IP="10.0.0.103"
 
