@@ -31,11 +31,13 @@ if [ "$SKIP_CLONE" != "true" ]; then
 		REPO_BRANCH=$(echo "$REPO_BRANCH" | sed -e 's/^"//' -e 's/"$//')
 	fi
 
-	tagret_git_clone_send "$REPO_URL" "$REPO_BRANCH" "/tmp" "/usr" "$COMMIT_ID"
-	target_execute "rm -r /usr/src" $((30*60))
-	target_execute "mv /usr/$(repo_name $url) /usr/src"
-	if [ "$?" != "0" ]; then
-		fatal "Cannot rename src"
+	retfile=$(mktemp /tmp/jenkins.XXXXXX)
+	target_execute "ls -lah /usr/src/.git" 60 $retfile
+	if "$(cat $retfile)" | grep -q "No such file or directory"; then
+		target_execute "rm -r -f /usr/src" $((60*60)) $retfile
+		target_git_clone "$REPO_URL" "$REPO_BRANCH" "/usr/src"
+	else
+		target_git_checkout "$REPO_URL" "$REPO_BRANCH" "/usr/src"
 	fi
 else
 	echo "Use local copy of /usr/src"

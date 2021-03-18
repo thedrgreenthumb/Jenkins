@@ -40,6 +40,34 @@ target_git_clone()
 # args:
 # $1 - repo url
 # $2 - repo branch
+# $3 - target local path
+#
+target_git_checkout()
+{
+	url=$1
+	branch=$2
+	path=$3
+
+	target_execute "ls -lah $(dirname $path))"
+	if [ "$?" != "0" ]; then
+		fatal "Path for repo cloning does not exist"
+	fi
+
+	target_execute "cd $path && git pull" $((120*60))
+	if [ "$?" != "0" ]; then
+		fatal "Cannot pull sources"
+	fi
+
+	target_execute "cd $path && git checkout $branch" $((120*60))
+	if [ "$?" != "0" ]; then
+		fatal "Cannot checkout sources"
+	fi
+}
+
+#
+# args:
+# $1 - repo url
+# $2 - repo branch
 # $3 - runner local path
 # $4 - target local path
 # $5 - commit id
