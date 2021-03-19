@@ -13,6 +13,8 @@ FORMAT_OPTIONS=${4}
 MOUNT_OPTIONS=${5}
 UNMOUNT_OPTIONS=${6}
 
+NUM_CORES=$(sysctl -a | grep hw.ncpu | awk -F ' ' '{print $2}')
+
 run_fsx()
 {
 	local pid_list=""

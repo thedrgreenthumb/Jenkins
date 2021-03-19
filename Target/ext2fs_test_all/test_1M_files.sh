@@ -26,6 +26,8 @@ touch_files()
 	done
 }
 
+NUM_CORES=$(sysctl -a | grep hw.ncpu | awk -F ' ' '{print $2}')
+
 ./dev_add.sh "${BLOCK_DEVICE}" "${BLOCK_DEVICE_SIZE}"
 ./format.sh "${BLOCK_DEVICE}" "${FORMAT_OPTIONS}"
 ./mount.sh "${BLOCK_DEVICE}" "${MOUNT_POINT}" "${MOUNT_OPTIONS}"

@@ -22,7 +22,7 @@ target_git_clone()
 	branch=$2
 	path=$3
 
-	target_execute "ls -lah $(dirname $path))"
+	target_execute "ls -lah $(dirname $path)"
 	if [ "$?" != "0" ]; then
 		fatal "Path for repo cloning does not exist"
 	fi
@@ -48,7 +48,7 @@ target_git_checkout()
 	branch=$2
 	path=$3
 
-	target_execute "ls -lah $(dirname $path))"
+	target_execute "ls -lah $(dirname $path)"
 	if [ "$?" != "0" ]; then
 		fatal "Path for repo cloning does not exist"
 	fi

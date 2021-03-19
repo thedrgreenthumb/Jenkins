@@ -16,7 +16,7 @@ fi
 
 target_info
 
-if [ "$SKIP_CLONE" != "true" ]; then
+if [ "$SKIP_SOURCE_UPDATE" != "true" ]; then
 	echo "Get git repo"
 	if [ -z "$REPO_URL" ]; then
 		REPO_URL=$FREEBSD_DEFAULT_URL
@@ -32,12 +32,14 @@ if [ "$SKIP_CLONE" != "true" ]; then
 	fi
 
 	retfile=$(mktemp /tmp/jenkins.XXXXXX)
-	target_execute "ls -lah /usr/src/.git" 60 $retfile
-	if "$(cat $retfile)" | grep -q "No such file or directory"; then
+	target_execute "[ -d /usr/src/.git ] && echo exist" 60 "$retfile"
+	if [ "$(cat $retfile)" == "exist" ]; then
+		echo "Checkout git repo..."
+		target_git_checkout "$REPO_URL" "$REPO_BRANCH" "/usr/src"
+	else
+		echo "Clone git repo..."
 		target_execute "rm -r -f /usr/src" $((60*60)) $retfile
 		target_git_clone "$REPO_URL" "$REPO_BRANCH" "/usr/src"
-	else
-		target_git_checkout "$REPO_URL" "$REPO_BRANCH" "/usr/src"
 	fi
 else
 	echo "Use local copy of /usr/src"
@@ -51,7 +53,8 @@ target_execute "cd /usr/src && git branch --show-current" 60 "$retfile"
 LOCAL_BRANCH=$(cat "$retfile")
 
 if [ -z "$COMMIT_ID" ]; then
-	target_execute "cd /usr/src && git rev-parse HEAD" 60 "$retfile"
+	target_execute "cd /usr/src && git rev-parse HEAD | \
+	    cut -c1-6" 60 "$retfile"
 	LOCAL_COMMIT_ID=$(cat "$retfile")
 else
 	LOCAL_COMMIT_ID=$COMMIT_ID
@@ -79,10 +82,10 @@ fi
 
 target_reboot
 
-echo "Validate running kernel..."
-target_execute "uname -a | awk -F ' ' '{print $6}' | awk -F '-' '{print $3}'" \
-    60 "$retfile"
-if echo "$LOCAL_COMMIT_ID" | grep -q "$(cat $retfile)"; then
+echo "Validate running kernel, expected commit ID: $LOCAL_COMMIT_ID"
+target_execute "uname -a" 60 "$retfile"
+uname=$(cat $retfile)
+if echo "$uname" | grep -q "$LOCAL_COMMIT_ID"; then
 	echo "Kernel is valid: branch=$LOCAL_BRANCH, commitID=$LOCAL_COMMIT_ID"
 else
 	fatal "Got invalid kernel commit ID in the end of build step"

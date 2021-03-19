@@ -1,7 +1,9 @@
 #!/bin/sh
 
 BLOCK_DEVICE_SECTOR_SIZE="512"
-BLOCK_DEVICE_SIZE_RESERVE="4G"
+BLOCK_DEVICE_SIZE_RESERVE=""
+BLOCK_DEVICE_DD_BS="1M"
+BLOCK_DEVICE_DD_COUNT="4096"
 
 BLOCK_DEVICE=${1}
 BLOCK_DEVICE_SIZE=${2}
@@ -27,7 +29,8 @@ if [ ! -c "$BLOCK_DEVICE" ]; then
 	exit 1
 fi
 
-if [ "$BLOCK_DEVICE_SIZE" -eq "$BLOCK_DEVICE_SIZE_RESERVE" ]; then
+if [ "$BLOCK_DEVICE_SIZE" == "$BLOCK_DEVICE_SIZE_RESERVE" ]; then
 	echo "Block device reserving..."
-	dd if="/dev/zero" of="$BLOCK_DEVICE" bs=1M
+	dd if="/dev/zero" of="$BLOCK_DEVICE" \
+	    bs="$BLOCK_DEVICE_DD_BS" count="$BLOCK_DEVICE_DD_COUNT"
 fi

@@ -12,7 +12,7 @@ UNMOUNT_OPTIONS=${6}
 ./mount.sh "${BLOCK_DEVICE}" "${MOUNT_POINT}" "${MOUNT_OPTIONS}"
 
 echo "Copy test binaries..."
-cp /root/Sources/fdtree.sh "${MOUNT_POINT}"/ || exit 1
+cp /root/Sources/fdtree/fdtree.sh "${MOUNT_POINT}"/ || exit 1
 
 /bin/sh -ce "cd ${MOUNT_POINT} && ./fdtree.sh -C -d 6 -l 4 -f 30 -s 10"
 
