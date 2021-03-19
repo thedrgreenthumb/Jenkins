@@ -6,3 +6,5 @@ SSH_IP="192.168.116.151"
 TARGET_HOSTNAME="ub"
 
 OPENZFS_TARGET_PATH="/home/user/Sources/zfs"
+
+ZFS_FILEDIR="/pool"
