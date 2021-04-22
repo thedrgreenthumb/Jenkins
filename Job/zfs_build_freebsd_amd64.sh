@@ -59,23 +59,23 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "Build..."
-target_execute "cd $OPENZFS_TARGET_PATH && make -j${NUM_CORES}" $((10*60))
+target_execute "cd $OPENZFS_TARGET_PATH && gmake -j${NUM_CORES}" $((10*60))
 if [ "$?" != "0" ]; then
 	fatal "Cannot build"
 fi
 
-echo "Install..."
-target_execute "cd $OPENZFS_TARGET_PATH && echo $SSH_USER_PASS | sudo -S make install" $((10*60))
-if [ "$?" != "0" ]; then
-	fatal "Cannot install"
-fi
+#echo "Install..."
+#target_execute "cd $OPENZFS_TARGET_PATH && echo $SSH_USER_PASS | sudo -S make install" $((10*60))
+#if [ "$?" != "0" ]; then
+#	fatal "Cannot install"
+#fi
 
-echo "Reload moduloes..."
-target_execute "echo $SSH_USER_PASS | sudo -S /home/user/Scripts/zfs_reload_modules.sh"
-retfile=$(mktemp /tmp/jenkins.XXXXXX)
-target_execute "dmesg | grep ZFS" 60 "$retfile"
-echo "Got ZFS:"
-cat "$retfile"
+#echo "Reload modules..."
+#target_execute "echo $SSH_USER_PASS | sudo -S /home/user/Scripts/zfs_reload_modules.sh"
+#retfile=$(mktemp /tmp/jenkins.XXXXXX)
+#target_execute "dmesg | grep ZFS" 60 "$retfile"
+#echo "Got ZFS:"
+#cat "$retfile"
 
 # TODO:
 # add module reloading script to target files

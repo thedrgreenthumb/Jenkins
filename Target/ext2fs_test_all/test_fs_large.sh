@@ -22,7 +22,7 @@ run_fsx()
 		exit 1
 	fi
 
-	local loops=$((NUM_CORES/4))
+	local loops=$((NUM_CORES/8))
 	if [ "$loops" -eq "0" ]; then
 		loops=1
 	fi

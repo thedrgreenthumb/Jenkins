@@ -26,6 +26,9 @@ setup()
 	target_execute "mkdir $ZFS_FILEDIR"
 	target_execute "sudo mount -t tmpfs -o rw tmpfs $ZFS_FILEDIR"
 
+	echo "== chown zfs repo =="
+	target_execute "chown -R user:user $TARGET_ZFS_SRC_PATH" $((10*60))
+
 	echo "== skip zfs tests =="
 	if [ ! -z "$TESTCASES_ZFS_SKIP" ]; then
 		for test_path in $TESTCASES_ZFS_SKIP; do
